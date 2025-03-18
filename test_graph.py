@@ -65,6 +65,47 @@ class GraphTest(unittest.TestCase):
         with self.assertRaises(Exception):
             homie.settle_debt("Josie", "Mitch")
             homie.settle_debt("Noah", "Josie")
+
+    def test_get_total_owed(self):
+        homie = HomiePointsGraph()
+        homie.add_debt("Noah", "Mitch")
+        owed = homie.get_total_owed("Mitch")
+        self.assertEqual(owed, 1)
+
+    def test_get_total_owed_many(self):
+        homie = HomiePointsGraph()
+        homie.add_debt("Noah", "Mitch")
+        homie.add_debt("Josie", "Mitch")
+        homie.add_debt("Owen", "Mitch", 3)
+        homie.add_debt("Kevin", "Mitch", 5)
+        owed = homie.get_total_owed("Mitch")
+        self.assertEqual(owed, 10)
+
+    def test_get_debt(self):
+        homie = HomiePointsGraph()
+        homie.add_debt("Noah", "Mitch")
+        debt = homie.get_debt("Noah")
+        self.assertEqual(debt, {"Mitch": 1})
+
+    def test_get_debt_many(self):
+        homie = HomiePointsGraph()
+        homie.add_debt("Noah", "Mitch")
+        homie.add_debt("Noah", "Josie", 2)
+        homie.add_debt("Noah", "Owen", )
+        homie.add_debt("Noah", "Kevin", 3)
+        homie.add_debt("Noah", "Noah", 2)
+        debt = homie.get_debt("Noah")
+        self.assertEqual(debt, {"Mitch": 1, "Josie": 2, "Owen": 1, "Kevin": 3, "Noah": 2})
+
+    def test_show_all(self):
+        homie = HomiePointsGraph()
+        homie.add_debt("Noah", "Mitch")
+        homie.add_debt("Noah", "Josie", 2)
+        homie.add_debt("Devin", "Owen", )
+        homie.add_debt("Mitch", "Kevin", 3)
+        homie.add_debt("Kevin", "Noah", 2)
+        graph = homie.show_all()
+        self.assertEqual(graph, homie.graph)
         
 
 
