@@ -33,11 +33,38 @@ class GraphTest(unittest.TestCase):
         with self.assertRaises(Exception):
             homie.add_debt("Noah", "Mitch", -1)
 
+    def test_remove_user(self):
+        homie = HomiePointsGraph()
+        homie.add_user("Noah")
+        homie.remove_user("Noah")
+        self.assertEqual(homie.graph, {})
+
+    def test_remove_users(self):
+        homie = HomiePointsGraph()
+        homie.add_user("Noah")
+        homie.add_debt("Mitch", "Noah")
+        homie.add_debt("Noah", "Mitch")
+        homie.remove_user("Noah")
+        self.assertEqual(homie.graph, {"Mitch": {}})
+
     def test_settle_debt(self):
         homie = HomiePointsGraph()
         homie.add_debt("Noah", "Mitch")
         homie.settle_debt("Noah", "Mitch")
         self.assertEqual(homie.graph, {"Noah": {"Mitch":0}})
+
+    def test_settle_debt_excess(self):
+        homie = HomiePointsGraph()
+        homie.add_debt("Noah", "Mitch")
+        homie.settle_debt("Noah", "Mitch", 10)
+        self.assertEqual(homie.graph, {"Noah": {"Mitch": 0}})
+
+    def test_settle_debt_no_user(self):
+        homie = HomiePointsGraph()
+        homie.add_debt("Noah", "Mitch")
+        with self.assertRaises(Exception):
+            homie.settle_debt("Josie", "Mitch")
+            homie.settle_debt("Noah", "Josie")
         
 
 
