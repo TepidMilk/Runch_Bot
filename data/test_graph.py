@@ -10,23 +10,23 @@ class GraphTest(unittest.TestCase):
     def test_add_debt(self):
         homie = HomiePointsGraph()
         homie.add_debt("Noah", "Mitch")
-        self.assertEqual(homie.graph, {"Noah": {"Mitch": 1}})
+        self.assertEqual(homie.graph, {"Noah": {"Mitch": 1}, "Mitch": {}})
 
     def test_add_debt_large(self):
         homie = HomiePointsGraph()
         homie.add_debt("Noah", "Mitch", 999999999999999999)
-        self.assertEqual(homie.graph, {"Noah": {"Mitch": 999999999999999999}})
+        self.assertEqual(homie.graph, {"Noah": {"Mitch": 999999999999999999}, "Mitch": {}})
     
     def test_add_debt_float(self):
         homie = HomiePointsGraph()
         homie.add_debt("Noah", "Mitch", 1.5)
-        self.assertEqual(homie.graph, {"Noah": {"Mitch": 1.5}})
+        self.assertEqual(homie.graph, {"Noah": {"Mitch": 1.5}, "Mitch": {}})
 
     def test_add_debt_float_int(self):
         homie = HomiePointsGraph()
         homie.add_debt("Noah", "Mitch", 1.5)
         homie.add_debt("Noah", "Mitch", 1)
-        self.assertEqual(homie.graph, {"Noah": {"Mitch": 2.5}})
+        self.assertEqual(homie.graph, {"Noah": {"Mitch": 2.5}, "Mitch": {}})
 
     def test_add_debt_negative(self):
         homie = HomiePointsGraph()
@@ -51,13 +51,13 @@ class GraphTest(unittest.TestCase):
         homie = HomiePointsGraph()
         homie.add_debt("Noah", "Mitch")
         homie.settle_debt("Noah", "Mitch")
-        self.assertEqual(homie.graph, {"Noah": {"Mitch":0}})
+        self.assertEqual(homie.graph, {"Noah": {"Mitch":0}, "Mitch": {}})
 
     def test_settle_debt_excess(self):
         homie = HomiePointsGraph()
         homie.add_debt("Noah", "Mitch")
         homie.settle_debt("Noah", "Mitch", 10)
-        self.assertEqual(homie.graph, {"Noah": {"Mitch": 0}})
+        self.assertEqual(homie.graph, {"Noah": {"Mitch": 0}, "Mitch": {}})
 
     def test_settle_debt_no_user(self):
         homie = HomiePointsGraph()
