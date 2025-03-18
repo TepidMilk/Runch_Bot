@@ -39,7 +39,11 @@ class HomiePointsGraph():
             self.graph[user_node][to_node] -= points
     
     def get_total_owed(self, user_node):
-        return self.graph.get(user_node, [])
+        total = 0
+        for user in self.graph:
+            if user_node in self.graph[user]:
+                total += self.graph[user][user_node]
+        return total
     
     def get_debt(self, user_node):
         return self.graph[user_node]
