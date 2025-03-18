@@ -6,7 +6,7 @@ class HomiePointsGraph():
         if user_node not in self.graph:
             self.graph[user_node] = {}
 
-    def add_debt(self, user_node, to_node, points):
+    def add_debt(self, user_node, to_node, points=1):
         if points < 1:
             raise Exception("Invalid Debt")
         
