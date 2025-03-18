@@ -8,7 +8,11 @@ load_dotenv(".env")
 TOKEN: str = os.getenv("TOKEN")
 
 #set bot intents. Allows messages, reactions, access to member info and emojis and stickers
-intents = discord.Intents(message_content=True, reactions=True, members=True, emojis_and_stickers=True)
+intents = discord.Intents.default()
+intents.members = True
+intents.message_content = True
+intents.reactions = True
+intents.emojis_and_stickers = True
 bot = commands.Bot(command_prefix="!", intents=intents)
 
 @bot.event
