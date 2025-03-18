@@ -17,5 +17,5 @@ class HomiePointCog(commands.Cog):
     async def add_debt(self, ctx, to_user: discord.Member, points=1):
         homie.add_debt(ctx.author.id, to_user.id, points)
         score = homie.get_score(ctx.author.id, to_user.id)
-        await ctx.send(f"{ctx.author.nick} {score[0]} - {to_user.nick} {score[1]}")
+        await ctx.send(f"{ctx.author.global_name} {score[0]} - {to_user.global_name} {score[1]}")
         
