@@ -5,6 +5,12 @@ class HomiePointsGraph():
     def add_user(self, user_node):
         if user_node not in self.graph:
             self.graph[user_node] = {}
+        
+    def remove_user(self, user_node):
+        for person in self.graph:
+            if user_node in self.graph[person]:
+                del self.graph[person][user_node]
+        del self.graph[user_node]
 
     def add_debt(self, user_node, to_node, points=1):
         if points < 1:
