@@ -19,6 +19,8 @@ class HomiePointsGraph():
         if user_node not in self.graph:
             self.add_user(user_node)
             self.graph[user_node][to_node] = points
+        elif to_node not in self.graph[user_node]:
+            self.graph[user_node][to_node] = points
         else:
             self.graph[user_node][to_node] += points
 
