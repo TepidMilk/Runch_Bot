@@ -13,13 +13,16 @@ class HomiePointsGraph():
         if user_node not in self.graph:
             self.add_user(user_node)
             self.graph[user_node][to_node] = points
-        elif to_node not in self.graph:
-            self.add_user(to_node)
-        self.graph[user_node][to_node] += points
+        else:
+            self.graph[user_node][to_node] += points
 
     def settle_debt(self, user_node, to_node, points=0):
         if points < 0:
             raise Exception("Invalid Settlement")
+        if user_node not in self.graph:
+            raise Exception("User not found")
+        if to_node not in self.graph[user_node]:
+            raise Exception("Invalid target")
         if points == 0:
             self.graph[user_node][to_node] = 0
         elif points >= self.graph[user_node][to_node]:
