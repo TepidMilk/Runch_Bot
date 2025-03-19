@@ -4,6 +4,7 @@ import os
 from discord.ext import commands
 from dotenv import load_dotenv
 from cogs.homie_point_cog import HomiePointCog
+from cogs.movie_list_cog import MovieListCog
 
 #Load token from .env
 load_dotenv(".env")
@@ -32,15 +33,26 @@ async def ping(ctx):
 @bot.command()
 @commands.check(is_me)
 async def unloadHomie(ctx):
-    await bot.remove_cog("AlertCog")
+    await bot.remove_cog("HomiePointCog")
 
 @bot.command()
 @commands.check(is_me)
 async def reloadHomie(ctx):
     await bot.add_cog(HomiePointCog(bot))
 
+@bot.command()
+@commands.check(is_me)
+async def unloadMovie(ctx):
+    await bot.remove_cog("MovieListCog")
+
+@bot.command()
+@commands.check(is_me)
+async def reloadMovie(ctx):
+    await bot.add_cog(MovieListCog(bot))
+
 async def startcog():
     await bot.add_cog(HomiePointCog(bot))
+    await bot.add_cog(MovieListCog(bot))
 
 asyncio.run(startcog())
 bot.run(TOKEN)
