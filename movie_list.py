@@ -3,7 +3,7 @@ class MovieList():
         self.movies = {}
 
     def add_user(self, user_node):
-        if user_node not in self.graph:
+        if user_node not in self.movies:
             self.movies[user_node] = set()
 
     def add_movie(self, user_node, movie: str):
