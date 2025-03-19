@@ -16,8 +16,8 @@ class HomiePointCog(commands.Cog):
 
     @commands.command()
     async def add_debt(self, ctx, to_user: discord.Member, points=1):
-        homie.add_debt(ctx.author.id, to_user.id, points)
-        score = homie.get_score(ctx.author.id, to_user.id)
+        homie.add_debt(ctx.author, to_user, points)
+        score = homie.get_score(ctx.author, to_user)
         await ctx.send(f"{ctx.author.global_name} {score[0]} - {to_user.global_name} {score[1]}")
         
     @commands.command()
@@ -33,8 +33,8 @@ class HomiePointCog(commands.Cog):
             await ctx.send("Confirmation timed out. The Debt was not settled")
 
         if response.content == "y":
-            homie.settle_debt(ctx.author.id, to_user.id, points)
-            score = homie.get_score(ctx.author.id, to_user.id)
+            homie.settle_debt(ctx.author, to_user, points)
+            score = homie.get_score(ctx.author, to_user)
             await ctx.send(f"{ctx.author.global_name} {score[0]} - {to_user.global_name} {score[1]}")
             if points == 0:
                 settlement = await ctx.send(f"{ctx.author.global_name} has settled their debt with {to_user.global_name}")
@@ -46,11 +46,10 @@ class HomiePointCog(commands.Cog):
 
     @commands.command()
     async def get_total_owed(self, ctx):
-        await ctx.send(f"Total: {homie.get_total_owed(ctx.author.id)}")
-        for id in homie.graph[ctx.author.id]:
-            to_user: discord.User = self.bot.get_user(id)
-            owed = homie.graph[ctx.author.id][id]
-            await ctx.send(f"{to_user.global_name} owes you {owed} Homie Points")
+        await ctx.send(f"Total: {homie.get_total_owed(ctx.author)}")
+        for user in homie.graph[ctx.author]:
+            owed = homie.graph[ctx.author][user]
+            await ctx.send(f"{user.global_name} owes you {owed} Homie Points")
 
     
             
