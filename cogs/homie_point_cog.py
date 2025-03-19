@@ -51,5 +51,12 @@ class HomiePointCog(commands.Cog):
             owed = homie.graph[ctx.author][user]
             await ctx.send(f"{user.global_name} owes you {owed} Homie Points")
 
+    @commands.command()
+    async def get_debt(self, ctx):
+        debt_embed = discord.Embed(title=None)
+        debts = homie.get_debt(ctx.author)
+        for user in debts:
+            debt_embed.add_field(name=f"{user.global_name}:", value=f"{debts[user]}")
+        await ctx.send(embed=debt_embed)
     
             
