@@ -11,3 +11,8 @@ def is_channel(ctx):
 class MovieListCog(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+
+    @commands.Cog.listener()
+    async def on_message(self, msg):
+        if msg.content == "ping movie-cog":
+            await msg.channel.send("movie-cog is online...", delete_after=3)
