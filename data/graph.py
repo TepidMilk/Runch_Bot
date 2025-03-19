@@ -59,6 +59,4 @@ class HomiePointsGraph():
         y = self.graph[to_node][user_node]
         return (x,y)
     
-    def show_all(self):
-        return self.graph
         

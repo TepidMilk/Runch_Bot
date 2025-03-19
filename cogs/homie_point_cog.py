@@ -5,6 +5,9 @@ from data.graph import HomiePointsGraph
 
 homie = HomiePointsGraph()
 
+def is_channel(ctx):
+    return (ctx.channel.id == 1108568875102113792 or ctx.channel.id == 1351608689550688328)
+
 class HomiePointCog(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -15,12 +18,14 @@ class HomiePointCog(commands.Cog):
             await msg.channel.send("homie-cog is online...", delete_after=3)
 
     @commands.command()
+    @commands.check(is_channel)
     async def give_points(self, ctx, to_user: discord.Member, points=1):
         homie.add_debt(ctx.author, to_user, points)
         score = homie.get_score(ctx.author, to_user)
-        await ctx.send(f"{ctx.author.global_name} {score[0]} - {to_user.global_name} {score[1]}")
+        await ctx.send(f"{ctx.author.global_name} {score[1]} - {to_user.global_name} {score[0]}")
         
     @commands.command()
+    @commands.check(is_channel)
     async def settle_debt(self, ctx, to_user: discord.Member, points=0):
         await ctx.send(f"{to_user.mention},\n Has {ctx.author.global_name} sufficiently paid their Homie Points you (y/n)")
 
@@ -45,6 +50,7 @@ class HomiePointCog(commands.Cog):
             await ctx.send("The Debt has not been settled.")
 
     @commands.command()
+    @commands.check(is_channel)
     async def list_owed(self, ctx):
         owed_embed = discord.Embed()
         owed_embed.set_author(name=f"{ctx.author.global_name}", icon_url=ctx.author.display_avatar.url)
@@ -57,6 +63,7 @@ class HomiePointCog(commands.Cog):
         await ctx.send(embed=owed_embed)
 
     @commands.command()
+    @commands.check(is_channel)
     async def list_debt(self, ctx):
         debt_embed = discord.Embed(title=None)
         debt_embed.set_author(name=f"{ctx.author.global_name}'s Debts", icon_url=ctx.author.display_avatar.url)
@@ -66,5 +73,4 @@ class HomiePointCog(commands.Cog):
             value.append(f"{user.global_name}: {debts[user]}")
         debt_embed.add_field(name="", value="\n".join(value), inline=False)
         await ctx.send(embed=debt_embed)
-    
-            
+
