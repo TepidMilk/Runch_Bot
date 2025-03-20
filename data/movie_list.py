@@ -5,8 +5,9 @@ class MovieList():
     def add_movie(self, user_node, movie: str):
         if user_node not in self.movies:
             self.movies[user_node] = movie
+            return 
         else:
-            return
+            return "You may only submit one movie"
         
     
     def remove_movie(self, user_node):
@@ -16,5 +17,5 @@ class MovieList():
         self.movies = {}
     
     def get_all_movies(self):
-        return self.movies.items()
+        return [f"{x}: {y}" for x, y in self.movies.items()]
     
