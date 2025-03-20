@@ -2,10 +2,6 @@ class MovieList():
     def __init__(self):
         self.movies = {}
 
-    """def add_user(self, user_node):
-        if user_node not in self.movies:
-            self.movies[user_node] = None"""
-
     def add_movie(self, user_node, movie: str):
         if user_node not in self.movies:
             self.movies[user_node] = movie
