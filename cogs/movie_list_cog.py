@@ -1,6 +1,7 @@
 import discord
 import asyncio
 import os
+import pickle
 from discord.ext import commands, tasks
 from data.movie_list import MovieList
 import random
@@ -8,7 +9,18 @@ import random
 def is_channel(ctx):
     return (ctx.channel.id == 1346252701159129328 or ctx.channel.id == 1351608689550688328)
 
-movie_list = MovieList()
+def save(data, filename="movie_list.pkl"):
+    with open(filename, "wb") as file:
+        pickle.dump(data, file)
+
+def load(filename="movie_list.pkl"):
+    try:
+        with open(filename, "rb") as f:
+            return pickle.load(f)
+    except FileNotFoundError:
+        return MovieList()
+
+movie_list = load()
 
 class MovieListCog(commands.Cog):
     def __init__(self, bot):
@@ -23,6 +35,7 @@ class MovieListCog(commands.Cog):
     @commands.check(is_channel)
     async def add_movie(self, ctx, movie):
         msg = movie_list.add_movie(ctx.author.id, movie)
+        save(movie_list)
         if msg == None:
             await ctx.send(f"{ctx.author.global_name} added {movie} to their list")
         else:
@@ -32,6 +45,7 @@ class MovieListCog(commands.Cog):
     @commands.check(is_channel)
     async def remove_movie(self, ctx):
         movie_list.remove_movie(ctx.author.id)
+        save(movie_list)
         await ctx.send(f"{ctx.author.global_name} removed their movie")
         
 

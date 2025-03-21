@@ -1,12 +1,24 @@
 import discord
 import asyncio
+import pickle
 from discord.ext import commands
 from data.graph import HomiePointsGraph
 
-homie = HomiePointsGraph()
-
 def is_channel(ctx):
     return (ctx.channel.id == 1108568875102113792 or ctx.channel.id == 1351608689550688328)
+
+def save(data, filename="homie.pkl"):
+    with open(filename, "wb") as file:
+        pickle.dump(data, file)
+
+def load(filename="homie.pkl"):
+    try:
+        with open(filename, "rb") as f:
+            return pickle.load(f)
+    except FileNotFoundError:
+        return HomiePointsGraph()
+
+homie = HomiePointsGraph()
 
 class HomiePointCog(commands.Cog):
     def __init__(self, bot):
@@ -21,6 +33,7 @@ class HomiePointCog(commands.Cog):
     @commands.check(is_channel)
     async def give_points(self, ctx, to_user: discord.Member, points=1):
         homie.add_debt(ctx.author.id, to_user.id, points)
+        save(homie)
         score = homie.get_score(ctx.author.id, to_user.id)
         await ctx.send(f"{ctx.author.global_name} {score[1]} - {to_user.global_name} {score[0]}")
         
@@ -39,6 +52,7 @@ class HomiePointCog(commands.Cog):
 
         if response.content == "y":
             homie.settle_debt(ctx.author.id, to_user.id, points)
+            save(homie)
             score = homie.get_score(ctx.author.id, to_user.id)
             await ctx.send(f"{ctx.author.global_name} {score[0]} - {to_user.global_name} {score[1]}")
             if points == 0:
