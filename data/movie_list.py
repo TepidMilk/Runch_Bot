@@ -1,5 +1,3 @@
-import pickle
-
 class MovieList():
     def __init__(self):
         self.movies = {}
@@ -20,5 +18,4 @@ class MovieList():
     
     def get_all_movies(self, bot):
         return [f"{bot.get_user(x).global_name}: {y}" for x, y in self.movies.items()]
-    
     
