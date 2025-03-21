@@ -22,7 +22,7 @@ class MovieListCog(commands.Cog):
     @commands.command()
     @commands.check(is_channel)
     async def add_movie(self, ctx, movie):
-        msg = movie_list.add_movie(ctx.author, movie)
+        msg = movie_list.add_movie(ctx.author.id, movie)
         if msg == None:
             await ctx.send(f"{ctx.author.global_name} added {movie} to their list")
         else:
@@ -31,7 +31,7 @@ class MovieListCog(commands.Cog):
     @commands.command()
     @commands.check(is_channel)
     async def remove_movie(self, ctx):
-        movie_list.remove_movie(ctx.author)
+        movie_list.remove_movie(ctx.author.id)
         await ctx.send(f"{ctx.author.global_name} removed their movie")
         
 
@@ -40,7 +40,7 @@ class MovieListCog(commands.Cog):
     async def list_movies(self, ctx):
         list_embed = discord.Embed()
         list_embed.set_author(name="The Kingdom's Movie List", icon_url=self.bot.user.display_avatar.url)
-        list_embed.add_field(name="\n".join(movie_list.get_all_movies()), value="", inline=False)
+        list_embed.add_field(name="\n".join(movie_list.get_all_movies(self.bot)), value="", inline=False)
         await ctx.send(embed=list_embed)
 
     @commands.command()
