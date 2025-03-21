@@ -68,7 +68,7 @@ class HomiePointCog(commands.Cog):
     async def list_owed(self, ctx):
         owed_embed = discord.Embed()
         owed_embed.set_author(name=f"{ctx.author.global_name}", icon_url=ctx.author.display_avatar.url)
-        owed_embed.add_field(name=f"Total: {homie.get_total_owed(ctx.autho.idr)}", value="", inline=False)
+        owed_embed.add_field(name=f"Total: {homie.get_total_owed(ctx.author.id)}", value="", inline=False)
         value = []
         for id in homie.graph:
             user = self.bot.get_user(id)
