@@ -16,6 +16,6 @@ class MovieList():
     def reset_list(self):
         self.movies = {}
     
-    def get_all_movies(self):
-        return [f"{x}: {y}" for x, y in self.movies.items()]
+    def get_all_movies(self, bot):
+        return [f"{bot.get_user(x).global_name}: {y}" for x, y in self.movies.items()]
     
