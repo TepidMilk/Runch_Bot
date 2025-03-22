@@ -2,6 +2,7 @@ import discord
 import asyncio
 import os
 import pickle
+import datetime
 from discord.ext import commands, tasks
 from data.movie_list import MovieList
 import random
@@ -37,7 +38,7 @@ class MovieListCog(commands.Cog):
         msg = movie_list.add_movie(ctx.author.id, movie)
         save(movie_list)
         if msg == None:
-            await ctx.send(f"{ctx.author.global_name} added {movie} to their list")
+            await ctx.send(f"{ctx.author.global_name} added {movie} to the list")
         else:
             await ctx.send(msg)
 
@@ -60,8 +61,10 @@ class MovieListCog(commands.Cog):
     @commands.command()
     @commands.check(is_channel)
     async def movie_poll(self, ctx):
-        movie_poll = discord.Poll(question="Vote for your Favorite Movie!", duration=1)
-        for user in movie_list.movies:
-            answer = random.choice(self.movies.movies[user])
-            movie_poll.add_answer(str(answer))
+        duration = datetime.timedelta(hours=1)
+        movie_poll = discord.Poll(question="Movie Sundays", duration=duration)
+        for answer in movie_list.get_all_movies(self.bot):
+            movie_poll.add_answer(text=answer)
         await ctx.send(poll=movie_poll)
+        movie_list.reset_list()
+        save(movie_list)
