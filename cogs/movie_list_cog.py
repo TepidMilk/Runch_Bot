@@ -61,7 +61,7 @@ class MovieListCog(commands.Cog):
     @commands.command()
     @commands.check(is_channel)
     async def movie_poll(self, ctx):
-        duration = datetime.timedelta(hours=1)
+        duration = datetime.timedelta(hours=13)
         movie_poll = discord.Poll(question="Movie Sundays", duration=duration)
         for answer in movie_list.get_all_movies(self.bot):
             movie_poll.add_answer(text=answer)
