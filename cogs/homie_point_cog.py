@@ -89,4 +89,3 @@ class HomiePointCog(commands.Cog):
             value.append(f"{user.global_name}: {debts[id]}")
         debt_embed.add_field(name="", value="\n".join(value), inline=False)
         await ctx.send(embed=debt_embed)
-
